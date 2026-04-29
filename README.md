@@ -59,6 +59,26 @@ npm install
 npm start
 ```
 
+## Estrutura Limpa
+
+Arquivos versionados do projeto:
+
+- `sentinela-wasabi.js`: aplicacao principal.
+- `config.example.js`: modelo de configuracao local.
+- `package.json` e `package-lock.json`: dependencias e scripts.
+- `pkg.config.json`: configuracao do empacotamento com `pkg`.
+- `README.md`: documentacao operacional.
+- `Sentinela Wasabi 2.0.code-workspace`: workspace opcional.
+
+Arquivos locais ignorados pelo Git:
+
+- `config.js`
+- `videos/`
+- `dist/`
+- `release/`
+- `*.mp4`
+- logs e executaveis gerados
+
 ## Build do Executavel
 
 ```bash
