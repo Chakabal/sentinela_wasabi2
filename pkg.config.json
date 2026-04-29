@@ -4,7 +4,7 @@
       "sentinela-wasabi.js"
     ],
     "assets": [
-      "config.js",
+      "config.example.js",
       "ffmpeg/**/*"
     ],
     "targets": [
