@@ -1,0 +1,16 @@
+{
+  "pkg": {
+    "scripts": [
+      "sentinela-wasabi.js"
+    ],
+    "assets": [
+      "config.js",
+      "ffmpeg/**/*"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ],
+    "outputPath": "dist",
+    "compress": "GZip"
+  }
+} 

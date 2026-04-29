@@ -1,0 +1,51 @@
+{
+  "name": "sentinela-wasabi-2",
+  "version": "2.0.0",
+  "description": "Sentinela Wasabi 2.0 - upload automatico de videos para Wasabi com dashboard profissional de console",
+  "main": "sentinela-wasabi.js",
+  "bin": "sentinela-wasabi.js",
+  "scripts": {
+    "start": "node sentinela-wasabi.js",
+    "start:dev": "node sentinela-wasabi.js",
+    "build": "pkg --config pkg.config.json sentinela-wasabi.js --target node18-win-x64 --output dist/sentinela-wasabi-2.0.exe",
+    "build:version": "pkg --config pkg.config.json sentinela-wasabi.js --target node18-win-x64 --output dist/sentinela-wasabi-2.0.exe",
+    "build:dev": "pkg --config pkg.config.json sentinela-wasabi.js --target node18-win-x64 --output dist/sentinela-wasabi-2.0-dev.exe",
+    "build:linux": "pkg --config pkg.config.json sentinela-wasabi.js --target node18-linux-x64 --output dist/sentinela-wasabi",
+    "build:mac": "pkg --config pkg.config.json sentinela-wasabi.js --target node18-macos-x64 --output dist/sentinela-wasabi",
+    "build:all": "pkg --config pkg.config.json sentinela-wasabi.js --targets node18-win-x64,node18-linux-x64,node18-macos-x64 --output dist/sentinela-wasabi",
+    "clean": "if exist dist rmdir /s /q dist 2>nul || echo Pasta dist removida ou nao existia",
+    "prebuild": "npm run clean",
+    "version:get": "node -p \"require('./package.json').version\"",
+    "distribute": "distribute.bat",
+    "test:wasabi": "node sentinela-wasabi.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.859.0",
+    "@aws-sdk/lib-storage": "^3.859.0",
+    "@smithy/node-http-handler": "^2.0.0",
+    "axios": "^0.27.0",
+    "chokidar": "^3.5.3",
+    "cli-progress": "^3.12.0",
+    "exiftool-vendored": "^30.3.0",
+    "form-data": "^4.0.4",
+    "p-queue": "^6.6.2"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1",
+    "rimraf": "^5.0.10"
+  },
+  "pkg": {
+    "scripts": [
+      "sentinela-wasabi.js"
+    ],
+    "assets": [
+      "config.js",
+      "ffmpeg/**/*"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ],
+    "outputPath": "dist",
+    "compress": "GZip"
+  }
+}
