@@ -507,6 +507,7 @@ class ProgressManager {
 }
 // Instâncias globais
 const throughputOptimizer = new ThroughputOptimizer();
+const dashboard = new ConsoleDashboard();
 const progressManager = new ProgressManager();
 
 // Função para atualizar interface do console com informações de throughput
@@ -1686,6 +1687,10 @@ async function init() {
     const watcher = startWatcher(wasabi);
     
     // Inicia monitor da fila
+    dashboard.start(
+      () => ({ waiting: processingQueue.size, pending: processingQueue.pending }),
+      () => throughputOptimizer.getAverageSpeed()
+    );
     startQueueMonitor();
     
     log('INFO', 'Sistema pronto! Monitorando pasta:', VIDEO_DIR);

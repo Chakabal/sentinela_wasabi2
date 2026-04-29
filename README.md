@@ -68,8 +68,12 @@ npm run build
 Saida esperada:
 
 ```text
-dist/sentinela-wasabi-2.0.exe
+release/sentinela-wasabi-2.0.exe
 ```
+
+Use a pasta `release/` para distribuir novas versoes do executavel. A pasta
+`dist/`, quando usada em servidor, pode conter `config.js`, `videos/` e logs
+operacionais e nao deve ser apagada pelo build.
 
 ## Observacao Sobre Campos b2_ no Payload
 
