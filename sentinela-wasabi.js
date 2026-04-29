@@ -23,17 +23,13 @@ const ProgressBar      = require('cli-progress');
 const axios            = require('axios');
 const PQueue           = require('p-queue').default;
 
-// Detecta pkg cedo para localizar config.js ao lado do executavel.
+// Detecta pkg cedo para carregar configuracao embutida no executavel.
 const isPkg     = typeof process.pkg !== 'undefined';
 const ASSET_DIR = __dirname;
 
 // ========================================
 // CARREGAMENTO DE CONFIGURACOES
 // ========================================
-function getRuntimeDir() {
-  return isPkg ? path.dirname(process.execPath) : process.cwd();
-}
-
 function waitBeforeExit(exitCode = 1) {
   if (process.stdin.isTTY) {
     console.log('');
@@ -45,54 +41,26 @@ function waitBeforeExit(exitCode = 1) {
   process.exit(exitCode);
 }
 
-function writeConfigExampleIfMissing(runtimeDir) {
-  const examplePath = path.join(runtimeDir, 'config.example.js');
-  if (fs.existsSync(examplePath)) return;
-
-  const exampleContent = `// config.example.js - Exemplo de configuracao do Sentinela Wasabi 2.0
-module.exports = {
-  WASABI: {
-    ACCESS_KEY_ID: 'sua_access_key_id_aqui',
-    SECRET_ACCESS_KEY: 'sua_secret_access_key_aqui',
-    BUCKET_NAME: 'videos.parla.app',
-    IMAGES_BUCKET_NAME: 'imagens.parla.app',
-    REGION: 'us-east-1',
-    ENDPOINT: 'https://s3.us-east-1.wasabisys.com'
-  },
-  PARLA: {
-    TOKEN: 'seu_token_parla_aqui',
-    WEBHOOK: 'https://parla.app/api/1.1/wf/b2_source',
-    TRANSFERRING_WEBHOOK: 'https://parla.app/api/1.1/wf/istransfering'
-  }
-};
-`;
-
-  try {
-    fs.writeFileSync(examplePath, exampleContent);
-  } catch (e) {
-    console.error('Nao foi possivel criar config.example.js:', e.message);
-  }
-}
-
 function loadConfig() {
-  const runtimeDir = getRuntimeDir();
-  const configPath = path.join(runtimeDir, 'config.js');
-
   try {
-    const loaded = require(configPath);
-    console.log('Configuracoes carregadas:', configPath);
+    if (isPkg) {
+      const loaded = require('./embedded-config.js');
+      console.log('Configuracoes embutidas no executavel carregadas.');
+      return loaded;
+    }
+
+    const loaded = require('./config.js');
+    console.log('Configuracoes locais carregadas: config.js');
     return loaded;
   } catch (error) {
-    writeConfigExampleIfMissing(runtimeDir);
-    console.error('ERRO: arquivo config.js nao encontrado ou invalido.');
-    console.error('');
-    console.error('Crie este arquivo ao lado do executavel:');
-    console.error(`  ${configPath}`);
-    console.error('');
-    console.error('Um modelo foi criado em:');
-    console.error(`  ${path.join(runtimeDir, 'config.example.js')}`);
-    console.error('');
-    console.error('Preencha as credenciais Wasabi e Parla.app e abra o executavel novamente.');
+    console.error('ERRO: configuracao nao encontrada ou invalida.');
+    if (isPkg) {
+      console.error('Este executavel foi gerado sem embedded-config.js.');
+      console.error('Gere novamente usando npm run build com um config.js local valido na raiz do projeto.');
+    } else {
+      console.error('Crie config.js na raiz do projeto usando config.example.js como modelo.');
+    }
+    console.error(`Detalhe: ${error.message}`);
     waitBeforeExit(1);
   }
 }
@@ -105,10 +73,10 @@ let credentials = loadConfig();
 const VERSION = '2.0.0';
 
 const CONFIG = {
-  // CONFIGURAÇÕES WASABI - Carregadas do config.js
+  // CONFIGURAÇÕES WASABI - embutidas no executavel gerado
   WASABI: credentials.WASABI,
 
-  // CONFIGURAÇÕES PARLA.APP - Carregadas do config.js
+  // CONFIGURAÇÕES PARLA.APP - embutidas no executavel gerado
   PARLA: credentials.PARLA,
 
   // CONFIGURAÇÕES DE UPLOAD - OTIMIZADAS PARA 300 Mbps (37 MB/s)

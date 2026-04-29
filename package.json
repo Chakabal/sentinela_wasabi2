@@ -14,10 +14,11 @@
     "build:mac": "pkg --config pkg.config.json sentinela-wasabi.js --target node18-macos-x64 --output dist/sentinela-wasabi",
     "build:all": "pkg --config pkg.config.json sentinela-wasabi.js --targets node18-win-x64,node18-linux-x64,node18-macos-x64 --output dist/sentinela-wasabi",
     "clean": "if exist release rmdir /s /q release 2>nul || echo Pasta release removida ou nao existia",
-    "prebuild": "npm run clean",
+    "prebuild": "npm run clean && npm run embed-config",
     "version:get": "node -p \"require('./package.json').version\"",
     "distribute": "distribute.bat",
-    "test:wasabi": "node sentinela-wasabi.js"
+    "test:wasabi": "node sentinela-wasabi.js",
+    "embed-config": "node build-embedded-config.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.859.0",
@@ -36,10 +37,10 @@
   },
   "pkg": {
     "scripts": [
-      "sentinela-wasabi.js"
+      "sentinela-wasabi.js",
+      "embedded-config.js"
     ],
     "assets": [
-      "config.js",
       "ffmpeg/**/*"
     ],
     "targets": [

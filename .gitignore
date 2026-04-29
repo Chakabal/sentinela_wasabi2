@@ -6,6 +6,7 @@ yarn-error.log*
 
 # Configuracao local e credenciais
 config.js
+embedded-config.js
 
 # Logs e estado operacional
 log*.txt

@@ -1,10 +1,10 @@
 {
   "pkg": {
     "scripts": [
-      "sentinela-wasabi.js"
+      "sentinela-wasabi.js",
+      "embedded-config.js"
     ],
     "assets": [
-      "config.example.js",
       "ffmpeg/**/*"
     ],
     "targets": [

@@ -91,6 +91,11 @@ Saida esperada:
 release/sentinela-wasabi-2.0.exe
 ```
 
+Antes do build, mantenha um `config.js` local na raiz do projeto. O script
+`npm run build` gera um `embedded-config.js` temporario, empacota as
+credenciais dentro do `.exe` e deixa o executavel final sem dependencia de
+arquivos externos.
+
 Use a pasta `release/` para distribuir novas versoes do executavel. A pasta
 `dist/`, quando usada em servidor, pode conter `config.js`, `videos/` e logs
 operacionais e nao deve ser apagada pelo build.
